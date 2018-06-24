@@ -3,7 +3,8 @@ var Mocho = {
     collision:require("./Mocho/modules/mocho.collision")
 };
 
-class World{
+//public interface
+exports.World = class World{
     constructor(){
         this.staticEntities = [];
         this.dynamicEntities = [];
@@ -36,42 +37,73 @@ class World{
             ctx.closePath();
             ctx.stroke();
         }
-        
     }
+    
     update(dt){
-        this.moveDynamicEntities(dt);
+        privates.moveDynamicEntities.call(this, dt);
         //this.solveDynamicCollisions(dt);
     }
-
     
+    findFirstObstacle(x,y,h,w,dx,dy){
+        return privates.findFirstObstacle.call(this,arguments);
+    }
+
+}
+
+exports.StaticEntity = class StaticEntity{
+    constructor(x,y,w,h,userData){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.userData = userData;
+        
+    }
+}
+exports.DynamicEntity = class DynamicEntity{
+    constructor(x,y,w,h,vx,vy,bounce,slide,userData){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.vx = vx || 0;
+        this.vy = vy || 0;
+        this.bounce = bounce || 0;
+        this.slide = slide || 1;
+        this.userData = userData;
+    }
+}
+
+//private World members
+const privates = {
     moveDynamicEntities(dt){
         let i;
         for(i in this.dynamicEntities){
-            this.moveDynamicEntity(this.dynamicEntities[i], dt);
+            privates.moveDynamicEntity.call(this, this.dynamicEntities[i], dt);
         }
-    }
+    },
 
     moveDynamicEntity(e,dt){
         let auxdt = dt;
         while(auxdt){
-            auxdt = this.dynamicEntityStep(e, auxdt);
+            auxdt = privates.dynamicEntityStep.call(this, e, auxdt);
         }
-    }
+    },
 
     dynamicEntityStep(e,dt){
         let dx = e.vx*dt,
             dy = e.vy*dt,
             ent = null;
-        ent = this.findFirstObstacle(e.x, e.y, e.w, e.h, dx, dy);
+        ent = privates.findFirstObstacle.call(this, e.x, e.y, e.w, e.h, dx, dy);
         if(ent){
-            dt = this.solveDynamicStaticCollision(e, ent, dt);
+            dt = privates.solveDynamicStaticCollision.call(this, e, ent, dt);
         }else{
             e.x += dx;
             e.y += dy;
             dt = 0;
         }
         return dt;
-    }
+    },
 
     solveDynamicStaticCollision(e,e1,dt){
         let lambda = 1,
@@ -106,7 +138,7 @@ class World{
             e.x += dx*lambda;
         }
         return dt*(1-lambda);
-    }
+    },
 
     findFirstObstacle(x,y,h,w,dx,dy){
         let j,
@@ -143,28 +175,4 @@ class World{
         }
         return ent;
     }
-}
-class StaticEntity{
-    constructor(x,y,w,h){
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-    }
-}
-class DynamicEntity{
-    constructor(x,y,w,h,vx,vy){
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.vx = vx;
-        this.vy = vy;
-        this.bounce = 0;
-        this.slide = 1;
-    }
-}
-
-exports.World = World;
-exports.DynamicEntity = DynamicEntity;
-exports.StaticEntity = StaticEntity;
+};
