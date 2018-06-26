@@ -3,64 +3,50 @@ var Mocho = {
     collision:require("./Mocho/modules/mocho.collision")
 };
 
-//public interface
 exports.World = class World{
-    constructor(){
+    //public methods
+	constructor(){
         this.staticEntities = [];
         this.dynamicEntities = [];
     }
-    show(ctx,canvas){
-        let i,e;
-        ctx.fillStyle="#000000";
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle="#FFFFFF";
-        for(i in this.staticEntities){
-            e = this.staticEntities[i];
-            ctx.fillRect(e.x,e.y,e.w,e.h);
-        }
-        ctx.fillStyle="#0000FF";
-        for(i in this.staticEntities){
-            e = this.staticEntities[i];
-            ctx.fillRect(e.x+1,e.y+1,e.w-2,e.h-2);
-        }
-        ctx.fillStyle="#00FF00";
-        for(i in this.dynamicEntities){
-            e = this.dynamicEntities[i];
-            ctx.fillRect(e.x,e.y,e.w,e.h);
-        }
-        ctx.strokeStyle="#FF00FF";
-        for(i in this.dynamicEntities){
-            e = this.dynamicEntities[i];
-            ctx.beginPath();
-            ctx.moveTo(e.x+e.w/2,e.y+e.h/2);
-            ctx.lineTo(e.x+e.w/2+e.vx*1000,e.y+e.h/2+e.vy*1000);
-            ctx.closePath();
-            ctx.stroke();
-        }
+    show(ctx, canvas){
+		return privates.show.apply(this,arguments);
     }
     
     update(dt){
         privates.moveDynamicEntities.call(this, dt);
-        //this.solveDynamicCollisions(dt);
+        //privates.solveDynamicCollisions.call(this, dt);
     }
     
     findFirstObstacle(x,y,h,w,dx,dy){
-        return privates.findFirstObstacle.call(this,arguments);
+        return privates.findFirstObstacle.apply(this,arguments);
     }
+	
+	createBox(options){
+		let o = options;
+		let box = new Box
+			( o.x, o.y
+			, o.w, o.h
+			, o.vx, o.vy
+			, o.bounce
+			, o.slide
+			, o.userData
+			);
+		switch(options.type){
+			case 'dynamic':
+				this.dynamicEntities.push(box);
+				break;
+			case 'static':
+			default:
+				this.staticEntities.push(box);
+				break;
+		}
+		return box;
+	}
 
 }
 
-exports.StaticEntity = class StaticEntity{
-    constructor(x,y,w,h,userData){
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.userData = userData;
-        
-    }
-}
-exports.DynamicEntity = class DynamicEntity{
+class Box{
     constructor(x,y,w,h,vx,vy,bounce,slide,userData){
         this.x = x;
         this.y = y;
@@ -74,7 +60,7 @@ exports.DynamicEntity = class DynamicEntity{
     }
 }
 
-//private World members
+//private methods
 const privates = {
     moveDynamicEntities(dt){
         let i;
@@ -174,5 +160,35 @@ const privates = {
             }
         }
         return ent;
-    }
+    },
+	show(ctx, canvas){
+	    let i,e;
+        ctx.fillStyle="#000000";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle="#FFFFFF";
+        for(i in this.staticEntities){
+            e = this.staticEntities[i];
+            ctx.fillRect(e.x,e.y,e.w,e.h);
+        }
+        ctx.fillStyle="#0000FF";
+        for(i in this.staticEntities){
+            e = this.staticEntities[i];
+            ctx.fillRect(e.x+1,e.y+1,e.w-2,e.h-2);
+        }
+        ctx.fillStyle="#00FF00";
+        for(i in this.dynamicEntities){
+            e = this.dynamicEntities[i];
+            ctx.fillRect(e.x,e.y,e.w,e.h);
+        }
+        ctx.strokeStyle="#FF00FF";
+        for(i in this.dynamicEntities){
+            e = this.dynamicEntities[i];
+            ctx.beginPath();
+            ctx.moveTo(e.x+e.w/2,e.y+e.h/2);
+            ctx.lineTo(e.x+e.w/2+e.vx*1000,e.y+e.h/2+e.vy*1000);
+            ctx.closePath();
+            ctx.stroke();
+        }
+    
+	}
 };
