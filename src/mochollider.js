@@ -43,6 +43,18 @@ exports.World = class World{
 		}
 		return box;
 	}
+	
+	destroyBox(box){
+		let i;
+		[ this.dynamicEntities
+		, this.staticEntities
+		].forEach(function(a){
+			i = a.indexOf(box);
+			if(i+1){
+				a.splice(i,1);
+			}
+		});
+	}
 
 }
 

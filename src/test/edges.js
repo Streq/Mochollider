@@ -67,6 +67,12 @@ var loop = new Mocho.loop.Loop(
 				case 65:
 					left = press;
 					break;
+				case 81:
+					if(press){
+						world.destroyBox(ent);
+						ent = world.createBox({type : 'dynamic', w : 10, h : 10, x : 150, y : 150});
+					}
+					break;
 			}
 		});
 		let h = +right -left;
