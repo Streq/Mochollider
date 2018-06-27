@@ -20,6 +20,44 @@ var eventqueue,
 	right=false;
 var loop = new Mocho.loop.Loop(
 	() => {
+		//boundaries
+		let closeIn = 10,
+			thickness = 1,
+			hw = canvas.width/2,
+			hh = canvas.height/2;
+		world.createBox(
+			{ type : 'static'
+			, w : canvas.width-closeIn*2
+			, h : thickness
+			, x : -hw + closeIn
+			, y : -hh + closeIn
+			}
+		);
+		world.createBox(
+			{ type : 'static'
+			, w : canvas.width-closeIn*2
+			, h : thickness
+			, x : -hw + closeIn
+			, y : -hh + canvas.height-thickness-closeIn
+			}
+		);
+		world.createBox(
+			{type : 'static'
+			, w : thickness
+			, h : canvas.height-closeIn*2
+			, x : -hw + closeIn
+			, y : -hh + closeIn
+			}
+		);
+		world.createBox(
+			{ type : 'static'
+			, w : thickness
+			, h : canvas.height-closeIn*2
+			, x : -hw + canvas.width-thickness-closeIn
+			, y : -hh + closeIn
+			}
+		);
+		
 		world.createBox({type : 'static', w : 20, h : 20, x : 0, y : 60});
 		world.createBox({type : 'static', w : 20, h : 20, x : 20, y : 60});
 		world.createBox({type : 'dynamic', w : 10, h : 10, x : 20, y : 80, vx : -0.03, vy : -0.03});
@@ -75,14 +113,15 @@ var loop = new Mocho.loop.Loop(
 					break;
 			}
 		});
+		let speed = 1;
 		let h = +right -left;
 		let v = +down -up
 		if(h&&v){
 			h *= Math.SQRT1_2;
 			v *= Math.SQRT1_2;
 		}
-		ent.vx = 1*h;
-		ent.vy = 1*v;
+		ent.vx = speed*h;
+		ent.vy = speed*v;
 
 		world.update(dt);
 	},
