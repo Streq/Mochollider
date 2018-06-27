@@ -8,6 +8,7 @@ exports.World = class World{
 	constructor(){
         this.staticEntities = [];
         this.dynamicEntities = [];
+		this.contactListener = undefined;
     }
     show(ctx, canvas){
 		return privates.show.apply(this,arguments);
@@ -21,7 +22,6 @@ exports.World = class World{
     findFirstObstacle(x,y,h,w,dx,dy){
         return privates.findFirstObstacle.apply(this,arguments);
     }
-	
 	createBox(options){
 		let o = options;
 		let box = new Box
@@ -43,7 +43,6 @@ exports.World = class World{
 		}
 		return box;
 	}
-	
 	destroyBox(box){
 		let i;
 		[ this.dynamicEntities
@@ -55,7 +54,9 @@ exports.World = class World{
 			}
 		});
 	}
-
+	setContactListener(listener){
+		this.contactListener = listener;
+	}
 }
 
 class Box{
@@ -94,7 +95,15 @@ const privates = {
             ent = null;
         ent = privates.findFirstObstacle.call(this, e.x, e.y, e.w, e.h, dx, dy);
         if(ent){
-            dt = privates.solveDynamicStaticCollision.call(this, e, ent, dt);
+			let contact = {
+				b0: e,
+				b1: ent,
+				valid: true,
+				dt: dt
+			}
+			privates.presolve.call(this,contact);
+			dt = privates.solve.call(this,contact);
+			privates.postsolve.call(this,contact);
         }else{
             e.x += dx;
             e.y += dy;
@@ -102,7 +111,27 @@ const privates = {
         }
         return dt;
     },
-
+	
+	presolve(contact){
+		if(this.contactListener && this.contactListener.preSolve){
+			this.contactListener.preSolve(contact);
+		}
+	},
+	
+	solve(contact){
+		let ret = contact.dt;
+		if(contact.valid){
+			ret = privates.solveDynamicStaticCollision.call(this, contact.b0, contact.b1, contact.dt);
+		}
+		return ret;
+	},
+	
+	postsolve(contact){
+		if(this.contactListener && this.contactListener.postSolve){
+			this.contactListener.postSolve(contact);
+		}
+	},
+	
     solveDynamicStaticCollision(e,e1,dt){
         let lambda = 1,
             sideOfCol,
@@ -173,31 +202,31 @@ const privates = {
         }
         return ent;
     },
+	
 	show(ctx, canvas){
-	    let i,e;
+	    let i,e,hw,hh;
+		hw = canvas.width*0.5;
+		hh = canvas.height*0.5;
         ctx.fillStyle="#000000";
         ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle="#FFFFFF";
-        for(i in this.staticEntities){
-            e = this.staticEntities[i];
-            ctx.fillRect(e.x,e.y,e.w,e.h);
-        }
-        ctx.fillStyle="#0000FF";
-        for(i in this.staticEntities){
-            e = this.staticEntities[i];
-            ctx.fillRect(e.x+1,e.y+1,e.w-2,e.h-2);
+		for(i in this.staticEntities){
+            ctx.fillStyle="#FFFFFF";
+			e = this.staticEntities[i];
+            ctx.fillRect(e.x+hw,e.y+hh,e.w,e.h);
+			ctx.fillStyle="#0000FF";
+			ctx.fillRect(e.x+1+hw,e.y+1+hh,e.w-2,e.h-2);
         }
         ctx.fillStyle="#00FF00";
         for(i in this.dynamicEntities){
             e = this.dynamicEntities[i];
-            ctx.fillRect(e.x,e.y,e.w,e.h);
+            ctx.fillRect(e.x+hw,e.y+hh,e.w,e.h);
         }
         ctx.strokeStyle="#FF00FF";
         for(i in this.dynamicEntities){
             e = this.dynamicEntities[i];
             ctx.beginPath();
-            ctx.moveTo(e.x+e.w/2,e.y+e.h/2);
-            ctx.lineTo(e.x+e.w/2+e.vx*1000,e.y+e.h/2+e.vy*1000);
+            ctx.moveTo(e.x+hw+e.w/2,e.y+hh+e.h/2);
+            ctx.lineTo(e.x+hw+e.w/2+e.vx*1000,e.y+hh+e.h/2+e.vy*1000);
             ctx.closePath();
             ctx.stroke();
         }
