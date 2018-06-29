@@ -13,11 +13,8 @@ var ctx = canvas.getContext("2d");
 
 var world = new Ph.World();
 var eventqueue,
-	ent, ent0,
-	left=false,
-	down=false,
-	up=false,
-	right=false;
+	ent0,
+	speed = 1;
 var loop = new Mocho.loop.Loop(
 	() => {
 		//boundaries
@@ -25,22 +22,6 @@ var loop = new Mocho.loop.Loop(
 			thickness = 1,
 			hw = canvas.width/2,
 			hh = canvas.height/2;
-		world.createBox(
-			{ type : 'static'
-			, w : canvas.width - closeIn*2
-			, h : thickness
-			, x : -hw + closeIn
-			, y : -hh + closeIn
-			}
-		);
-		world.createBox(
-			{type : 'static'
-			, w : thickness
-			, h : canvas.height - closeIn*2
-			, x : -hw + closeIn
-			, y : -hh + closeIn
-			}
-		);
 		world.createBox(
 			{ type : 'static'
 			, w : canvas.width-closeIn*2
@@ -58,48 +39,26 @@ var loop = new Mocho.loop.Loop(
 			}
 		);
 		
-		ent = world.createBox({type : 'dynamic', w : 10, h : 10, x : hw - 10 - closeIn - 1, y : hh - 10 - closeIn - 1});
+		ent0 = world.createBox(
+			{ type : 'dynamic'
+			, w : 10
+			, h : 10
+			, x : hw - 10 - closeIn - 1
+			, y : hh - 10 - closeIn - 1
+			}
+		);
 		
-		ent0 = world.createBox({type : 'dynamic', w : 10, h : 10, x : hw - 10 - closeIn - 1, y : hh - 10 - closeIn - 1});
-		
-		eventqueue = Mocho.input.makeEventQueue(canvas,["keydown","keyup"]);
+		eventqueue = Mocho.input.makeEventQueue(canvas,["keydown"]);
 	},
 	(dt) => {
 		eventqueue.processEvents((e)=>{
-			let press = (e.type === "keydown");
 			switch(e.keyCode){
-				case 87:
-					up = press;
-					break;
-				case 83:
-					down = press;
-					break;
-				case 68:
-					right = press;
-					break;
-				case 65:
-					left = press;
-					break;
 				case 81:
-					if(press){
-						world.destroyBox(ent);
-						world.destroyBox(ent0);
-						ent = world.createBox({type : 'dynamic', w : 10, h : 10, x : 150, y : 150});
-						ent0 = world.createBox({type : 'dynamic', w : 10, h : 10, x : 150, y : 150});
-						
-					}
+					world.destroyBox(ent0);
+					ent0 = world.createBox({type : 'dynamic', w : 10, h : 10, x : 150, y : 150});					
 					break;
 			}
 		});
-		let speed = 1;
-		let h = +right -left;
-		let v = +down -up
-		if(h&&v){
-			h *= Math.SQRT1_2;
-			v *= Math.SQRT1_2;
-		}
-		ent.vx = speed*h;
-		ent.vy = speed*v;
 		ent0.vx = speed;
 		ent0.vy = speed;
 		
