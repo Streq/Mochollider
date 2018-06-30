@@ -135,7 +135,14 @@ function getBoundingRange(x,y,w,h,dx,dy){
 function boxBoxMoving(x0, y0, w0, h0, x1, y1, w1, h1, dx, dy){
 	return (
 		boxBoxMovingBroad.apply(null, arguments) && //if bounding box doesn't collide it don't matter
-		boxLine(x1-x0-w0, y1-y0-h0, w0+w1, h0+h1, 0, 0, dx, dy)//actual calc thx to my man minkowski
+		boxLine //actual calc thx to my man minkowski
+			( x0-x1-w1 //minkdif x
+			, y0-y1-h1 //minkdif y
+			, w0+w1 //minkdif w
+			, h0+h1 //minkdif h
+			, 0, 0 //origin
+			, -dx, -dy //opposite distance
+			)
 	);
 }
 
@@ -195,7 +202,14 @@ function boxBoxSideOfCollision(x0, y0, w0, h0, x1, y1, w1, h1, dx, dy){
 	return{x : x, y : y};
 }
 function boxBoxMovingLambda(x0, y0, w0, h0, x1, y1, w1, h1, dx, dy){
-	return boxLineLambda(x1-x0-w0, y1-y0-h0, w0+w1, h0+h1, 0, 0, dx, dy);
+	return boxLineLambda
+		( x0-x1-w1 //minkdif x
+		, y0-y1-h1 //minkdif y
+		, w0+w1 //minkdif w
+		, h0+h1 //minkdif h
+		, 0, 0 //origin
+		, -dx, -dy //opposite distance
+		);
 }
 
 mod.boxPoint = boxPoint;
