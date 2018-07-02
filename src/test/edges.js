@@ -64,31 +64,31 @@ var loop = new Mocho.loop.Loop(
 		
 		world.createBox({type : 'static', w : 20, h : 20, x : -50, y : -10});
 		world.createBox({type : 'static', w : 20, h : 20, x : -30, y : -10});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -30, y : 10, vx : -0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -40, y : 10, vx : 0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -30, y : -20, vx : -0.03, vy : 0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -40, y : -20, vx : 0.03, vy : 0.03});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : -30, y : 10, vx : -0.05, vy : -0.05, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : -40, y : 10, vx : 0.03, vy : -0.03, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : -30, y : -20, vx : -0.03, vy : 0.03, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : -40, y : -20, vx : 0.05, vy : 0.05, bounce: 1});
 		
 		world.createBox({type : 'static', w : 20, h : 20, x : 30, y : -10});
 		world.createBox({type : 'static', w : 20, h : 20, x : 10, y : -10});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 30, y : 10, vx : -0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 20, y : 10, vx : 0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 30, y : -20, vx : -0.03, vy : 0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 20, y : -20, vx : 0.03, vy : 0.03});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 30, y : 10, vx : -0.05, vy : -0.05, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 20, y : 10, vx : 0.03, vy : -0.03, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 30, y : -20, vx : -0.03, vy : 0.03, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 20, y : -20, vx : 0.05, vy : 0.05, bounce: 1});
 		
 		world.createBox({type : 'static', w : 20, h : 20, x : -10, y : -50});
 		world.createBox({type : 'static', w : 20, h : 20, x : -10, y : -30});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : -30, vx : -0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : -40, vx : -0.03, vy : 0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : -30, vx : 0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : -40, vx : 0.03, vy : 0.03});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : -30, vx : -0.05, vy : -0.05, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : -40, vx : -0.03, vy : 0.03, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : -30, vx : 0.03, vy : -0.03, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : -40, vx : 0.05, vy : 0.05, bounce: 1});
 		
 		world.createBox({type : 'static', w : 20, h : 20, x : -10, y : 30});
 		world.createBox({type : 'static', w : 20, h : 20, x : -10, y : 10});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : 30, vx : -0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : 20, vx : -0.03, vy : 0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : 30, vx : 0.03, vy : -0.03});
-		world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : 20, vx : 0.03, vy : 0.03});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : 30, vx : -0.05, vy : -0.05, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : 10, y : 20, vx : -0.03, vy : 0.03, bounce: 1});
+		//world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : 30, vx : 0.03, vy : -0.03, bounce: 1});
+		world.createBox({type : 'dynamic', w : 10, h : 10, x : -20, y : 20, vx : 0.05, vy : 0.05, bounce: 1});
 		
 		ent = world.createBox({type : 'dynamic', w : 10, h : 10, x : 150, y : 150});
 		eventqueue = Mocho.input.makeEventQueue(canvas,["keydown","keyup"]);

@@ -146,7 +146,7 @@ const privates = {
         if(sideOfCol.x){
             let oldx = e.x;
             //fix velocity
-            e.vx = 0;
+            e.vx = -e.vx*e.bounce;
             //fix position
             e.x = (sideOfCol.x > 0)?
                 (e1.x - e.w):
@@ -156,7 +156,7 @@ const privates = {
         }else{
             let oldy = e.y;
             //fix velocity
-            e.vy = 0;
+            e.vy = -e.vy*e.bounce;
             //fix position
             e.y = (sideOfCol.y > 0)?
                 (e1.y - e.h):
