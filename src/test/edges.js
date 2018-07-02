@@ -25,6 +25,7 @@ var loop = new Mocho.loop.Loop(
 			thickness = 1,
 			hw = canvas.width/2,
 			hh = canvas.height/2;
+		//top
 		world.createBox(
 			{ type : 'static'
 			, w : canvas.width-closeIn*2
@@ -33,6 +34,7 @@ var loop = new Mocho.loop.Loop(
 			, y : -hh + closeIn
 			}
 		);
+		//bot
 		world.createBox(
 			{ type : 'static'
 			, w : canvas.width-closeIn*2
@@ -41,6 +43,7 @@ var loop = new Mocho.loop.Loop(
 			, y : -hh + canvas.height-thickness-closeIn
 			}
 		);
+		//left
 		world.createBox(
 			{type : 'static'
 			, w : thickness
@@ -49,6 +52,7 @@ var loop = new Mocho.loop.Loop(
 			, y : -hh + closeIn
 			}
 		);
+		//right
 		world.createBox(
 			{ type : 'static'
 			, w : thickness

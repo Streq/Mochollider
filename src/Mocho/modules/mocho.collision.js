@@ -9,6 +9,15 @@ function boxPoint(x,y,w,h,px,py){
 	);
 }
 
+function boxPointClosed(x,y,w,h,px,py){
+	return (
+		(px >= x) &&
+		(py >= y) &&
+		(px <= x + w) &&
+		(py <= y + h)
+	);
+}
+
 function rangeRange(x0,w0,x1,w1){
 	return (
 		(x0 + w0 > x1) &&
@@ -46,6 +55,20 @@ function boxLine(x, y, w, h, a, b, c, d){
 		lineLine(a, b, c, d, x, y, x, y + h)//left
 	);
 }
+
+function boxLineClosed(x, y, w, h, a, b, c, d){
+	if (boxPointClosed(x, y, w, h, a, b) || boxPointClosed(x, y, w, h, c, d))
+	{
+		return true;
+	}
+	return (
+		lineLineClosed(a, b, c, d, x, y, x + w, y) ||//top
+		lineLineClosed(a, b, c, d, x + w, y, x + w, y + h) ||//right
+		lineLineClosed(a, b, c, d, x, y + h, x + w, y + h) ||//bot
+		lineLineClosed(a, b, c, d, x, y, x, y + h)//left
+	);
+}
+
 function boxLineLambda(x, y, w, h, a, b, c, d){
 	return (
 		Math.min(
@@ -135,7 +158,7 @@ function getBoundingRange(x,y,w,h,dx,dy){
 function boxBoxMoving(x0, y0, w0, h0, x1, y1, w1, h1, dx, dy){
 	return (
 		boxBoxMovingBroad.apply(null, arguments) && //if bounding box doesn't collide it don't matter
-		boxLine //actual calc thx to my man minkowski
+		boxLineClosed //actual calc thx to my man minkowski
 			( x0-x1-w1 //minkdif x
 			, y0-y1-h1 //minkdif y
 			, w0+w1 //minkdif w

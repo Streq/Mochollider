@@ -1,3 +1,4 @@
+"use strict";
 module.exports = {
     animation : require("./mocho.animation"),
     collision : require("./mocho.collision"),
