@@ -55,7 +55,14 @@ var loop = new Mocho.loop.Loop(
 			switch(e.keyCode){
 				case 81:
 					world.destroyBox(ent0);
-					ent0 = world.createBox({type : 'dynamic', w : 10, h : 10, x : 150, y : 150});					
+					ent0 = world.createBox(
+						{ type : 'dynamic'
+						, w : 10
+						, h : 10
+						, x : 179
+						, y : 179
+						}
+					);					
 					break;
 			}
 		});
