@@ -34,6 +34,14 @@ function boxBox(x0, y0, w0, h0, x1, y1, w1, h1){
 	);
 }
 
+function boxBoxCoords(x0a, y0a, x1a, y1a, x0b, y0b, x1b, y1b){
+	return (
+		(x1a > x0b) && 
+		(x1b > x0a) && 
+		(y1a > y0b) && 
+		(y1b > y0a)
+	);
+}
 function boxContainsBox(x0, y0, w0, h0, x1, y1, w1, h1){
 	return (
 		(x0 + w0 < x1) && 
@@ -118,11 +126,11 @@ function lineLineLambda(a,b,c,d,p,q,r,s){
 }
 
 function boxBoxMovingBroad(x0, y0, w0, h0, x1, y1, w1, h1, dx, dy){
-	return boxBox //check the bounding box of the moving box
-		( Math.min(x0, x0 + dx), Math.min(y0, y0 + dy)
-		, w0 + Math.abs(dx), h0 + Math.abs(dy)
+	return boxBoxCoords //check the bounding box of the moving box
+		( x0 + Math.min(0,dx), y0 + Math.min(0,dy)
+		, x0 + w0 + Math.max(0,dx) , y0 + h0 + Math.max(0,dy)
 		, x1, y1
-		, w1, h1
+		, x1+w1, y1+h1
 		);
 }
 function getBoundingBox(x,y,w,h,dx,dy){

@@ -19,7 +19,7 @@ exports.World = class World{
         //privates.solveDynamicCollisions.call(this, dt);
     }
     
-    findFirstObstacle(x,y,h,w,dx,dy){
+    findFirstObstacle(x,y,w,h,dx,dy){
         return privates.findFirstObstacle.apply(this,arguments);
     }
 	createBox(options){
@@ -167,7 +167,7 @@ const privates = {
         return dt*(1-lambda);
     },
 
-    findFirstObstacle(x,y,h,w,dx,dy){
+    findFirstObstacle(x,y,w,h,dx,dy){
         let j,
             ent = null,
             lambda = 1;
